@@ -10,8 +10,8 @@ WORKDIR /usr/src/app
 RUN git clone https://github.com/jorgehyzak/pacman.git .
 
 # Install app dependencies
-RUN npm install
 RUN npm install @splunk/otel
+RUN npm install
 
 # Expose port 8080
 EXPOSE 8080
