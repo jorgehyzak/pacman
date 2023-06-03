@@ -14,6 +14,7 @@ RUN npm install @opentelemetry/api
 RUN npm install @splunk/otel
 RUN npm install @opentelemetry/sdk-node
 RUN npm install @opentelemetry/auto-instrumentations-node
+RUN npm install express
 RUN npm install
 
 RUN npm install
