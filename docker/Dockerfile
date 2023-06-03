@@ -11,9 +11,9 @@ RUN git clone https://github.com/jorgehyzak/pacman.git .
 
 # Install app dependencies
 RUN npm install @splunk/otel
-RUN npm install --save @opentelemetry/api
-RUN npm install --save @opentelemetry/sdk-node
-RUN npm install --save @opentelemetry/auto-instrumentations-node
+RUN npm install @opentelemetry/api
+RUN npm install @opentelemetry/sdk-node
+RUN npm install @opentelemetry/auto-instrumentations-node
 RUN npm install
 
 RUN npm install
