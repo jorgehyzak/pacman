@@ -6,7 +6,7 @@
 //require('dotenv').config();
 const { start } = require('@splunk/otel');
 start({
-   serviceName: 'pacman-test'
+   serviceName: 'pacman'
 });
 
 const { getInstrumentations } = require('@splunk/otel/lib/instrumentations');
