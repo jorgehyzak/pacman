@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 //require('dotenv').config();
-//const { start } = require('@splunk/otel');
-//start({
-//   serviceName: 'pacman'
-//});
+const { start } = require('@splunk/otel');
+start({
+   serviceName: 'pacman'
+});
 
 const { getInstrumentations } = require('@splunk/otel/lib/instrumentations');
 const opentelemetry = require('@opentelemetry/api');
