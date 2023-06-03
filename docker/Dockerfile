@@ -17,5 +17,6 @@ RUN npm install
 EXPOSE 8080
 
 # Run container
-#CMD ["npm", "start"]
-CMD ["node", "-r", "@splunk/otel/instrument", "./bin/server.js"]
+# CMD ["npm", "start"]
+# CMD ["node", "-r", "@splunk/otel/instrument", "./bin/server.js"]
+CMD ["node", "-r" "./bin/server.js"]
