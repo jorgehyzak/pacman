@@ -17,8 +17,6 @@ RUN npm install @opentelemetry/auto-instrumentations-node
 RUN npm install express
 RUN npm install
 
-RUN npm install
-
 # Expose port 8080
 EXPOSE 8080
 
