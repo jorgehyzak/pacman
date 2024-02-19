@@ -3,13 +3,19 @@
 <!--<html lang="en">-->
 <html lang="en" manifest="cache.manifest">
 <head>
-    <script src="https://cdn.signalfx.com/o11y-gdi-rum/<version>/splunk-otel-web.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.signalfx.com/o11y-gdi-rum/latest/splunk-otel-web.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.signalfx.com/o11y-gdi-rum/latest/splunk-otel-web-session-recorder.js" crossorigin="anonymous"></script>
     <script>
         SplunkRum.init({
             realm: "us1",
             rumAccessToken: "B9jHr4Kj_WApbhhmkaOTLA",
             applicationName: "pacman",
             deploymentEnvironment: "prod"
+        });
+        SplunkSessionRecorder.init({
+          app: "pacman",
+          realm: "us1",
+          rumAccessToken: "B9jHr4Kj_WApbhhmkaOTLA"
         });
     </script>
     <meta charset="utf-8" />
