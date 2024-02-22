@@ -10,7 +10,7 @@
             Ivan Font          (ivanfont.com)
 
 -------------------------------------------------------------------*/
-
+import SplunkRum from '@splunk/otel-web';
 "use strict";
 
 function geronimo() {
@@ -164,7 +164,11 @@ function geronimo() {
         var name = $("input[type=text]").val();
         $("#highscore-form").html("Saving highscore...");
         ajaxAdd(name, game.cloudProvider, game.zone, game.host,
-                 game.score.score, game.level);
+                 game.score.score, game.level);  
+       // Spans generated prior to this call don't have user metadata
+        SplunkRum.setGlobalAttributes({
+           'enduser.name': name,
+        });
     }
 
     function getUserId() {
