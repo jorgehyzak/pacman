@@ -10,10 +10,11 @@
             Ivan Font          (ivanfont.com)
 
 -------------------------------------------------------------------*/
-import SplunkRum from '@splunk/otel-web';
 "use strict";
 
 function geronimo() {
+import SplunkRum from '@splunk/otel-web';
+
 /* ----- Global Variables ---------------------------------------- */
     var canvas;
     var joystick;
