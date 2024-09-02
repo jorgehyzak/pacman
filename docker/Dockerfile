@@ -7,7 +7,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Clone game source code
-RUN git clone https://github.com/jorgehyzak/pacman.git .
+RUN git clone --branch datadog-instrumentation https://github.com/jorgehyzak/pacman.git .
 
 # Install app dependencies
 RUN npm install @opentelemetry/api
@@ -15,8 +15,6 @@ RUN npm install @splunk/otel
 RUN npm install @opentelemetry/sdk-node
 RUN npm install @opentelemetry/auto-instrumentations-node
 RUN npm install express
-RUN npm install
-
 RUN npm install
 
 # Expose port 8080
