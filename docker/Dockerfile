@@ -14,7 +14,8 @@ RUN git clone --branch datadog-instrumentation https://github.com/jorgehyzak/pac
 #RUN npm install @splunk/otel
 #RUN npm install @opentelemetry/sdk-node
 #RUN npm install @opentelemetry/auto-instrumentations-node
-RUN npm install express
+#RUN npm install express
+RUN npm install dd-trace --save
 RUN npm install
 
 # Expose port 8080
