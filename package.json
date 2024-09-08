@@ -10,8 +10,11 @@
   },
   "license": "GPLv3",
   "dependencies": {
+    "@opentelemetry/api": "^1.8.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.43.0",
+    "@opentelemetry/sdk-node": "^0.49.1",
     "body-parser": "^1.17.1",
-    "express": "^4.14.1",
+    "express": "^4.18.3",
     "jade": "^1.11.0",
     "mongodb": "^2.2.24"
   },

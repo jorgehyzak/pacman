@@ -3,15 +3,6 @@
 /**
  * Module dependencies.
  */
-//require('dotenv').config();
-/*const { start } = require('@splunk/otel');
-start({
-   serviceName: 'pacman'
-});
-*/
-const { getInstrumentations } = require('@splunk/otel/lib/instrumentations');
-const opentelemetry = require('@opentelemetry/api');
-const tracer = opentelemetry.trace.getTracer('te-apm');
 
 var app = require('../app');
 //var debug = require('debug')('pacman:server');
@@ -77,6 +68,7 @@ function onError(error) {
             console.error(bind + ' requires elevated privileges');
             process.exit(1);
             break;
+        case 'EADDRINUSE':
             console.error(bind + ' is already in use');
             process.exit(1);
             break;
@@ -94,12 +86,5 @@ function onListening() {
     var bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    const span = tracer.startSpan('get_port_number',{'kind':opentelemetry.SpanKind.INTERNAL});
-    span.setAttribute('username','jorge');
-    span.addEvent('buscando el puerto');
     console.log('Listening on ' + bind);
-    span.setAttribute('port',bind);
-    span.end();
 }
-
-
