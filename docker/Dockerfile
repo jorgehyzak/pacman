@@ -1,6 +1,6 @@
 FROM node:19
 
-MAINTAINER Ivan Font <ifont@redhat.com>
+#MAINTAINER Ivan Font <ifont@redhat.com>
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -22,6 +22,7 @@ EXPOSE 8080
 
 # Run container
 # CMD ["npm", "start"]
-CMD ["node", "-r", "@splunk/otel/instrument", "./bin/server.js"]
+# CMD ["node", "-r", "@splunk/otel/instrument", "./bin/server.js"]
 # CMD ["npm", "start", "./bin/server.js"]
 # CMD ["node", "-r", "./bin/entry.js", "./bin/server.js"]
+CMD ["node", "-r", "./bin/entry.js"]
