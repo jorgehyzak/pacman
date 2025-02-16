@@ -7,7 +7,9 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Clone game source code
-RUN git clone https://github.com/jorgehyzak/pacman.git .
+#RUN git clone https://github.com/jorgehyzak/pacman.git .
+RUN git clone --branch manual_inst_pacman --single-branch https://github.com/jorgehyzak/pacman.git .
+
 
 # Install app dependencies
 RUN npm install @opentelemetry/api

@@ -1,11 +1,12 @@
 const { start } = require('@splunk/otel');
 
+// Start OpenTelemetry
 start({
    serviceName: 'pacman'
-}).then(() => {
-    console.log("✅ OpenTelemetry instrumentation started");
-    require('./server');  // Ensure server.js starts AFTER OpenTelemetry
-}).catch((err) => {
-    console.error("❌ OpenTelemetry failed to start:", err);
 });
 
+// Log confirmation message
+console.log("✅ OpenTelemetry instrumentation started");
+
+// Start the application server
+require('./server');
