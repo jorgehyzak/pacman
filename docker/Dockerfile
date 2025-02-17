@@ -12,12 +12,12 @@ RUN git clone --branch manual_inst_pacman --single-branch https://github.com/jor
 
 
 # Install app dependencies
+RUN npm install
 RUN npm install @opentelemetry/api
 RUN npm install @splunk/otel
 RUN npm install @opentelemetry/sdk-node
 RUN npm install @opentelemetry/auto-instrumentations-node
 RUN npm install express
-RUN npm install
 
 # Expose port 8080
 EXPOSE 8080

@@ -3,16 +3,6 @@
 /**
  * Module dependencies.
  */
-//require('dotenv').config();
-/*const { start } = require('@splunk/otel');
-start({
-   serviceName: 'pacman'
-});
-*/
-const { getInstrumentations } = require('@splunk/otel/lib/instrumentations');
-const opentelemetry = require('@opentelemetry/api');
-const tracer = opentelemetry.trace.getTracer('te-apm');
-
 var app = require('../app');
 //var debug = require('debug')('pacman:server');
 var http = require('http');
@@ -89,15 +79,21 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
+const opentelemetry = require('@opentelemetry/api');
+
 function onListening() {
     var addr = server.address();
     var bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
+
+    console.log('Listening on ' + bind);
+
+    const tracer = opentelemetry.trace.getTracer('pacman-tracer');
+
     const span = tracer.startSpan('get_port_number',{'kind':opentelemetry.SpanKind.INTERNAL});
     span.setAttribute('username','jorge');
     span.addEvent('buscando el puerto');
-    console.log('Listening on ' + bind);
     span.setAttribute('port',bind);
     span.end();
 }
