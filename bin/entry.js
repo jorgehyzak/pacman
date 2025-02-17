@@ -28,7 +28,7 @@ const traceExporter = new OTLPTraceExporter({
     url: 'https://ingest.us1.signalfx.com/v2/trace/otlp',  // ✅ Correct endpoint
     headers: {
         'X-SF-Token': process.env.SPLUNK_ACCESS_TOKEN,  // ✅ Correct header for Splunk
-        'Content-Type': 'application/x-protobuf'  // ✅ Required for OTLP protobuf format
+        'Content-Type': 'application/json'  // ✅ Required for OTLP protobuf format
     }
 });
 
