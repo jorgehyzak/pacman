@@ -2,6 +2,7 @@ const { start } = require('@splunk/otel');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { ConsoleSpanExporter, SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-node');
 const opentelemetry = require('@opentelemetry/api');
+const { Resource } = require('@opentelemetry/resources')
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
 // Enable OpenTelemetry Debug Logs
