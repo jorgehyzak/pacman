@@ -9,7 +9,7 @@ const opentelemetry = require('@opentelemetry/api');
 // Enable OpenTelemetry Debug Logs
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
-// ✅ Start Auto-Instrumentation (Splunk's recommended way)
+// ✅ Start Auto-Instrumentation First
 start({
     serviceName: process.env.OTEL_SERVICE_NAME || 'pacman'
 });
@@ -21,22 +21,19 @@ const resource = new Resource({
 });
 
 // ✅ Configure the OpenTelemetry SDK for manual tracing (sending directly to Splunk)
-const provider = new NodeTracerProvider({
-    resource,
-});
+const provider = new NodeTracerProvider({ resource });
 
 // ✅ Use OTLP HTTP Exporter with **correct Splunk endpoint and headers**
 const traceExporter = new OTLPTraceExporter({
-    url: 'https://ingest.us1.signalfx.com/v2/trace/otlp',  // ✅ Updated for `us1` realm
+    url: 'https://ingest.us1.signalfx.com/v2/trace/otlp',  // ✅ Correct endpoint
     headers: {
         'X-SF-Token': process.env.SPLUNK_ACCESS_TOKEN,  // ✅ Correct header for Splunk
         'Content-Type': 'application/x-protobuf'  // ✅ Required for OTLP protobuf format
     }
 });
 
-// ✅ Use BatchSpanProcessor for performance (recommended for production)
+// ✅ Add the exporter **without** calling `provider.register()`
 provider.addSpanProcessor(new BatchSpanProcessor(traceExporter));
-provider.register();
 
 console.log("✅ OpenTelemetry instrumentation started and sending spans directly to Splunk Observability Cloud (us1)");
 
