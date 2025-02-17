@@ -3,14 +3,18 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var Database = require('../lib/database');
 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+// Import OpenTelemetry
+const opentelemetry = require('@opentelemetry/api');
+const tracer = require('../bin/entry'); // Import tracer from entry.js
 
-// middleware that is specific to this router
-router.use(function timeLog (req, res, next) {
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+// Middleware to log request time
+router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date());
     next();
-})
+});
 
 router.get('/list', urlencodedParser, function(req, res, next) {
     console.log('[GET /highscores/list]');
@@ -19,7 +23,6 @@ router.get('/list', urlencodedParser, function(req, res, next) {
             return next(err);
         }
 
-        // Retrieve the top 10 high scores
         var col = db.collection('highscore');
         col.find({}).sort([['score', -1]]).limit(10).toArray(function(err, docs) {
             var result = [];
@@ -27,10 +30,14 @@ router.get('/list', urlencodedParser, function(req, res, next) {
                 console.log(err);
             }
 
-            docs.forEach(function(item, index, array) {
-                result.push({ name: item['name'], cloud: item['cloud'],
-                              zone: item['zone'], host: item['host'],
-                              score: item['score'] });
+            docs.forEach(function(item) {
+                result.push({
+                    name: item['name'],
+                    cloud: item['cloud'],
+                    zone: item['zone'],
+                    host: item['host'],
+                    score: item['score']
+                });
             });
 
             res.json(result);
@@ -53,7 +60,14 @@ router.post('/', urlencodedParser, function(req, res, next) {
             return next(err);
         }
 
-        // Insert high score with extra user data
+        // Start OpenTelemetry Span
+        const span = tracer.startSpan("insert-highscore", {
+            attributes: {
+                "user.score": userScore,
+                "user.level": userLevel
+            }
+        });
+
         db.collection('highscore').insertOne({
                 name: req.body.name,
                 cloud: req.body.cloud,
@@ -76,9 +90,11 @@ router.post('/', urlencodedParser, function(req, res, next) {
                 if (err) {
                     console.log(err);
                     returnStatus = 'error';
+                    span.setStatus({ code: opentelemetry.SpanStatusCode.ERROR, message: err.message });
                 } else {
                     console.log('Successfully inserted highscore');
                     returnStatus = 'success';
+                    span.setStatus({ code: opentelemetry.SpanStatusCode.OK });
                 }
 
                 res.json({
@@ -88,6 +104,9 @@ router.post('/', urlencodedParser, function(req, res, next) {
                     level: userLevel,
                     rs: returnStatus
                 });
+
+                // End the span
+                span.end();
             });
     });
 });
