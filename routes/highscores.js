@@ -60,13 +60,21 @@ router.post('/', urlencodedParser, function(req, res, next) {
             return next(err);
         }
 
-        // Start OpenTelemetry Span
+        // Retrieve current active context and start a child span
+        const activeSpan = opentelemetry.trace.getSpan(opentelemetry.context.active());
+
+        if (activeSpan) {
+            console.log("Adding span to the existing trace...");
+        } else {
+            console.log("No active trace found. Creating a new span.");
+        }
+
         const span = tracer.startSpan("insert-highscore", {
             attributes: {
                 "user.score": userScore,
-                "user.level": userLevel
+                "user.level": userLevel,
             }
-        });
+        }, opentelemetry.context.active()); // Attach to the current trace context
 
         db.collection('highscore').insertOne({
                 name: req.body.name,

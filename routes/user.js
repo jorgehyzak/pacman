@@ -35,7 +35,15 @@ router.post('/stats', urlencodedParser, function (req, res, next) {
             return next(err);
         }
 
-        // Create a trace span for updating user stats
+        // Retrieve the current active span and create a child span
+        const activeSpan = opentelemetry.trace.getSpan(opentelemetry.context.active());
+
+        if (activeSpan) {
+            console.log("Adding span to the existing trace...");
+        } else {
+            console.log("No active trace found. Creating a new span.");
+        }
+
         const span = tracer.startSpan("update-user-score", {
             attributes: {
                 "user.score": userScore,
@@ -43,7 +51,7 @@ router.post('/stats', urlencodedParser, function (req, res, next) {
                 "user.lives": userLives,
                 "user.elapsedTime": userET
             }
-        });
+        }, opentelemetry.context.active()); // Attach to the current trace context
 
         db.collection('userstats').updateOne({
             _id: new ObjectId(req.body.userId),
