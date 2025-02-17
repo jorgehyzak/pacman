@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const opentelemetry = require('@opentelemetry/api');
 const http = require('http');
 const app = require('../app');
 
@@ -37,25 +36,8 @@ function onError(error) {
     }
 }
 
-// ✅ Manual Instrumentation: Capture listening event in a trace
 function onListening() {
     const addr = server.address();
     const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-
     console.log('Listening on ' + bind);
-
-    // ✅ Get tracer instance from OpenTelemetry API
-    const tracer = opentelemetry.trace.getTracer('pacman-tracer');
-
-    // ✅ Start a span to manually trace the port binding process
-    const span = tracer.startSpan('server_start', {
-        kind: opentelemetry.SpanKind.INTERNAL
-    });
-
-    span.setAttribute('username', 'jorge');  // Add attributes for filtering in Splunk
-    span.addEvent('Server started and listening');  // Add event for visibility
-    span.setAttribute('port', bind);
-    
-    // ✅ End span after capturing relevant info
-    span.end();
 }
