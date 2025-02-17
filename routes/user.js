@@ -48,8 +48,7 @@ router.post('/stats', urlencodedParser, function (req, res, next) {
             attributes: {
                 "user.score": userScore,
                 "user.level": userLevel,
-                "user.lives": userLives,
-                "user.elapsedTime": userET
+                "user.lives": userLives
             }
         }, opentelemetry.context.active()); // Attach to the current trace context
 
