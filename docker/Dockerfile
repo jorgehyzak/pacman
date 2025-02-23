@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 
 # Clone game source code
 #RUN git clone https://github.com/jorgehyzak/pacman.git .
-RUN git clone --branch manual_inst_pacman --single-branch https://github.com/jorgehyzak/pacman.git .
+RUN git clone --branch manual-inst --single-branch https://github.com/jorgehyzak/pacman.git .
 
 
 # Install app dependencies
@@ -27,4 +27,4 @@ EXPOSE 8080
 # CMD ["node", "-r", "@splunk/otel/instrument", "./bin/server.js"]
 # CMD ["npm", "start", "./bin/server.js"]
 # CMD ["node", "-r", "./bin/entry.js", "./bin/server.js"]
-CMD ["node", "-r", "./bin/entry.js"]
+CMD ["node", "-r", "./bin/server.js"]

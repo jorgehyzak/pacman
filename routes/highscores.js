@@ -1,3 +1,10 @@
+const { start } = require('@splunk/otel');
+
+start({
+    serviceName: "highscores-service"
+});
+const { trace } = require('@opentelemetry/api');
+
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
@@ -13,6 +20,9 @@ router.use(function timeLog (req, res, next) {
 })
 
 router.get('/list', urlencodedParser, function(req, res, next) {
+    const tracer = trace.getTracer("highscores-service");
+    const span = tracer.startSpan('getHighscoresList');
+    
     console.log('[GET /highscores/list]');
     Database.getDb(req.app, function(err, db) {
         if (err) {
@@ -36,10 +46,14 @@ router.get('/list', urlencodedParser, function(req, res, next) {
             res.json(result);
         });
     });
+    span.end();
 });
 
 // Accessed at /highscores
 router.post('/', urlencodedParser, function(req, res, next) {
+    const tracer = trace.getTracer("highscores-service");
+    const span = tracer.startSpan('getHighscores');
+    
     console.log('[POST /highscores] body =', req.body,
                 ' host =', req.headers.host,
                 ' user-agent =', req.headers['user-agent'],
@@ -90,6 +104,7 @@ router.post('/', urlencodedParser, function(req, res, next) {
                 });
             });
     });
+    span.end();
 });
 
 module.exports = router;
