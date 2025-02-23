@@ -1,3 +1,6 @@
+const setupOpenTelemetry = require('../lib/otel');
+setupOpenTelemetry("highscores-service"); // Custom service name
+
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');

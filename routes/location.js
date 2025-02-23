@@ -1,3 +1,6 @@
+const setupOpenTelemetry = require('../lib/otel');
+setupOpenTelemetry("location-service");
+
 var http = require('http');
 var https = require('https');
 var express = require('express');
