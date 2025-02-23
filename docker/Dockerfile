@@ -14,9 +14,10 @@ RUN git clone --branch manual-inst --single-branch https://github.com/jorgehyzak
 # Install app dependencies
 RUN npm install
 RUN npm install @opentelemetry/api
-RUN npm install @splunk/otel
+#RUN npm install @splunk/otel
 RUN npm install @opentelemetry/sdk-node
 RUN npm install @opentelemetry/auto-instrumentations-node
+RUN npm install @opentelemetry/exporter-trace-otlp-http 
 RUN npm install express
 
 # Expose port 8080

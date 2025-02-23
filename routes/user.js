@@ -21,6 +21,7 @@ router.use(function timeLog (req, res, next) {
 router.get('/id', function(req, res, next) {
     const tracer = trace.getTracer('user-service');
     const span = tracer.startSpan('GET /user/id');
+    
     console.log('[GET /user/id]');
     Database.getDb(req.app, function(err, db) {
         if (err) {
