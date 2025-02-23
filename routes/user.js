@@ -1,6 +1,7 @@
 const setupOpenTelemetry = require('../lib/otel');
 setupOpenTelemetry("user-service");
 
+const { trace } = require('@opentelemetry/api');
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
@@ -18,6 +19,8 @@ router.use(function timeLog (req, res, next) {
 })
 
 router.get('/id', function(req, res, next) {
+    const tracer = trace.getTracer('user-service');
+    const span = tracer.startSpan('GET /user/id');
     console.log('[GET /user/id]');
     Database.getDb(req.app, function(err, db) {
         if (err) {
@@ -41,6 +44,7 @@ router.get('/id', function(req, res, next) {
            }
 
            res.json(userId);
+           span.end();
         });
     });
 
