@@ -1,12 +1,3 @@
-const { start } = require('@splunk/otel');
-
-start({
-    serviceName: "users-service"
-});
-
-const { trace } = require('@opentelemetry/api');
-const tracer = trace.getTracer("users-service");
-
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
@@ -24,8 +15,6 @@ router.use(function timeLog (req, res, next) {
 })
 
 router.get('/id', function(req, res, next) {
-    const span = tracer.startSpan('getUserId');
-
     console.log('[GET /user/id]');
     Database.getDb(req.app, function(err, db) {
         if (err) {
@@ -51,11 +40,10 @@ router.get('/id', function(req, res, next) {
            res.json(userId);
         });
     });
-    span.end();
+
 });
 
 router.post('/stats', urlencodedParser, function(req, res, next) {
-    const span = tracer.startSpan('saveUserStats');
     console.log('[POST /user/stats]\n',
                 ' body =', req.body, '\n',
                 ' host =', req.headers.host,
@@ -111,12 +99,9 @@ router.post('/stats', urlencodedParser, function(req, res, next) {
                 });
         });
     });
-    span.end();
 });
 
 router.get('/stats', function(req, res, next) {
-    const span = tracer.startSpan('getStats');
-
     console.log('[GET /user/stats]');
 
     Database.getDb(req.app, function(err, db) {
@@ -149,7 +134,6 @@ router.get('/stats', function(req, res, next) {
             res.json(result);
         });
     });
-    span.end();
 });
 
 

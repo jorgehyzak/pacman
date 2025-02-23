@@ -1,11 +1,3 @@
-const { start } = require('@splunk/otel');
-
-start({
-    serviceName: "location-service"
-});
-const { trace } = require('@opentelemetry/api');
-
-
 var http = require('http');
 var https = require('https');
 var express = require('express');
@@ -20,9 +12,6 @@ router.use(function timeLog(req, res, next) {
 })
 
 router.get('/metadata', function(req, res, next) {
-    const tracer = trace.getTracer("location-service");
-    const span = tracer.startSpan('getLocationMetadata');
-
     console.log('[GET /loc/metadata]');
     var h = getHost();
     getCloudMetadata(function(c, z) {
@@ -35,7 +24,6 @@ router.get('/metadata', function(req, res, next) {
             host: h
         });
     });
-    span.end();
 });
 
 function getCloudMetadata(callback) {
